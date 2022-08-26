@@ -1,0 +1,52 @@
+[build-system]
+# editable install support (PEP 660) added in 64.0
+requires = ["setuptools >= 64.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+version = "0.0.1"
+name = "writertools"
+description = "A collection of tools for writers"
+readme = "README.md"
+requires-python = ">=3.8"
+# keywords = ["one", "two"]
+license = { text = "Apache 2.0" }
+classifiers = ["Framework :: Django", "Programming Language :: Python :: 3"]
+dependencies = [
+    "django >= 3.2.15, < 4.0",
+    "django-environ >= 0.9.0",
+    "pillow >= 9.2.0",
+    # Editable installs for deps is not supported in pyproject.toml. Lock a version of
+    # genericsite before the first release.
+    # "django-genericsite @ git+ssh://git@github.com/veselosky/django-genericsite.git",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "django_debug_toolbar",
+    "django_extensions",
+    "pytest >= 6.2.5",
+    "pytest-django >= 4.5.2",
+]
+
+# [project.scripts]
+# my-script = "my_package.module:function"
+
+[tool.setuptools]
+packages = ["writertools"]
+
+[tool.pytest.ini_options]
+minversion = "6.2.5"
+DJANGO_SETTINGS_MODULE = "writertools.settings"
+# addopts = "-ra -q"
+# testpaths = ["tests", "integration"]
+python_files = ["tests.py", "test_*.py", "*_test.py", "*_tests.py"]
+
+# By default pytest will show all warnings including DeprecationWarning.
+# https://docs.python.org/3/library/warnings.html#the-warnings-filter
+# TLDR: ignore:$message:$category:$module:$lineno
+filterwarnings = [
+    # removed in Django 4.1, but required for <3.2
+    "ignore:.*default_app_config::",
+]
