@@ -14,7 +14,9 @@ license = { text = "Apache 2.0" }
 classifiers = ["Framework :: Django", "Programming Language :: Python :: 3"]
 dependencies = [
     "django >= 3.2.15, < 4.0",
+    "django-allauth >= 0.51.0",
     "django-environ >= 0.9.0",
+    "docutils >= 0.19",
     "pillow >= 9.2.0",
     # Editable installs for deps is not supported in pyproject.toml. Lock a version of
     # genericsite before the first release.

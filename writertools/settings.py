@@ -41,6 +41,7 @@ SITE_ID = 1
 # insecure configuration in production.
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG", default=False)
+MAIL_DEBUG = env("MAIL_DEBUG", default=DEBUG)
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=[])
 
 # Database
@@ -90,6 +91,9 @@ ROOT_URLCONF = "writertools.urls"
 
 INSTALLED_APPS = [
     "genericsite",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     # 3rd party apps for genericsite
     "django_bootstrap_icons",
     "easy_thumbnails",
@@ -99,6 +103,7 @@ INSTALLED_APPS = [
     "tinymce",
     # Core Django below custom so we can override their templates
     "django.contrib.admin",
+    "django.contrib.admindocs",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -138,6 +143,12 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
 
 #######################################################################
 # DEVELOPMENT: If running in a dev environment, loosen restrictions
@@ -145,6 +156,11 @@ TEMPLATES = [
 #######################################################################
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
+
+    # Don't send email from dev environment, just write it to console.
+    if MAIL_DEBUG:
+        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
     # Use the basic storage with no manifest
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
     try:

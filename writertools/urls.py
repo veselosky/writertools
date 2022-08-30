@@ -20,7 +20,12 @@ from django.urls import include, path
 from genericsite import views as generic
 
 urlpatterns = [
-    path("accounts/", include("django.contrib.auth.urls")),
+    # Genericsite accounts/profile
+    path("accounts/profile/", generic.ProfileView.as_view()),
+    # Use allauth views rather than Django defaults
+    path("accounts/", include("allauth.urls")),
+    # path("accounts/", include("django.contrib.auth.urls")),
+    path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
     path("filer/", include("filer.urls")),
     path("tinymce/", include("tinymce.urls")),
