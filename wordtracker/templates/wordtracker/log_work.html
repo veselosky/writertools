@@ -1,0 +1,16 @@
+{% extends 'wordtracker/base.html' %}
+{% load i18n django_bootstrap5 %}
+{% block content %}
+<main class="container-lg">
+  <h1>Log Work</h1>
+  <div class="row">
+    <div class="col-md-4">
+      <form action="" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" value="Save" class="btn btn-primary form-control">
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock content %}

@@ -20,8 +20,9 @@ from django.urls import include, path
 from genericsite import views as generic
 
 urlpatterns = [
+    path("wordtracker/", include("wordtracker.urls")),
     # Genericsite accounts/profile
-    path("accounts/profile/", generic.ProfileView.as_view()),
+    path("accounts/profile/", generic.ProfileView.as_view(), name="account_profile"),
     # Use allauth views rather than Django defaults
     path("accounts/", include("allauth.urls")),
     # path("accounts/", include("django.contrib.auth.urls")),

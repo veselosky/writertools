@@ -1,0 +1,19 @@
+{% extends "wordtracker/base.html" %}
+{% load i18n %}
+{% block content %}
+<main class="container-lg">
+  <form action="{% url 'wordtracker:session_timer' %}" method="post">
+    <p>{% csrf_token %}
+      <input type="hidden" name="session_id" value="">
+      <input type="submit" name="session" value="{% trans "Start a Work Session" %}"
+        class="btn btn-outline-success">
+    </p>
+  </form>
+  <p>
+    <a class="btn btn-outline-primary" href="{% url 'wordtracker:log_work' %}">{% trans "Log My Work" %}</a>
+  </p>
+  <p>
+    <a class="btn btn-outline-primary" href="{% url 'wordtracker:view_stats' %}">{% trans "View My Stats" %}</a>
+  </p>
+</main>
+{% endblock content %}

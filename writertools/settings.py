@@ -90,7 +90,9 @@ WSGI_APPLICATION = "writertools.wsgi.application"
 ROOT_URLCONF = "writertools.urls"
 
 INSTALLED_APPS = [
+    "wordtracker",
     "genericsite",
+    "django_bootstrap5",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -128,7 +130,9 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -159,7 +163,7 @@ if DEBUG:
 
     # Don't send email from dev environment, just write it to console.
     if MAIL_DEBUG:
-        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+        EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
     # Use the basic storage with no manifest
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
