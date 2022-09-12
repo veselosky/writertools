@@ -1,0 +1,37 @@
+{% load genericsite i18n %}
+<div class="container">
+  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+      {% sitevar "logo" as logo %}{% if logo %}<img src="{{ logo }}" alt="{{ request.site.name }}" />{% endif %}
+      {% sitevar "brand" as brand %}<span class="fs-4">{% firstof brand request.site.name %}</span>
+    </a>
+    {% menu "main-nav" as menu %}
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+      {% for item in menu.links %}{% firstof item.get_absolute_url item.url as url %}
+      <li class="nav-item"><a href="{{ url }}"
+        class="nav-link {% menu_active url %}" {% menu_aria_current url %}
+        >{% if url == "/" %}{% trans "Home" %}{% else %}{% firstof item.title item.opengraph.title %}{% endif %}</a></li>
+      {% endfor %}
+    </ul>
+    {% if request.user.is_authenticated %}
+
+    <div class="col-md-3 dropdown text-end">
+      <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+          <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+        </svg> <span class="fs-3 align-bottom">{{ request.user.username }}</span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end text-small">
+        <li><a class="dropdown-item" href="{% url 'account_profile' %}">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{% url 'account_logout' %}">Sign out</a></li>
+      </ul>
+    </div>
+    {% else %}
+    <div class="col-md-3 text-end">
+      <a href="{% url 'account_signup' %}" class="btn btn-primary">Sign-up</a>
+      <a href="{% url "account_login" %}" class="btn btn-outline-primary me-2">Login</a>
+    </div>
+    {% endif %}
+  </header>
+</div>

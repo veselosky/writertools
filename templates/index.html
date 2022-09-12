@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block precontent %}
+  <div class="container-lg">
+    <div class="row">
+      <div class="col-md-8">
+        {% include "genericsite/blocks/article_text.html" %}
+      </div>
+      <div class="col-md-4">
+        <h1>Word Tracker</h1>
+        <p class="">Track your productivity with the FREE word tracker:</p>
+        <p class=""><a href="{% url 'account_signup' %}" class="btn btn-outline-primary">Sign Up Free</a></p>
+        <p class="">Already have an account?</p>
+        <p class=""><a href="{% url 'account_login' %}" class="btn btn-outline-primary">Login</a></p>
+      </div>
+    </div>
+  </div>
+{% endblock precontent %}
