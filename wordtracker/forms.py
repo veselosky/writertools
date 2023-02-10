@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
@@ -74,12 +74,28 @@ class LogWorkForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user")
+        self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
-        self.fields["project"].queryset = user.project_set.filter(
+        self.fields["project"].queryset = self.user.project_set.filter(
             status=ProjectStatus.IN_PROGRESS
         )
 
     def clean_duration(self):
         minutes = self.cleaned_data["duration"]
-        return str(timedelta(minutes=minutes))
+        if minutes:
+            return str(timedelta(minutes=minutes))
+        return None
+
+    def clean(self):
+        data = super().clean()
+        # TODO: Attempt to calculate duration from start and end
+        if not data["duration"]:
+            startdate = data["startdate"]
+            starttime = data["starttime"]
+            enddate = data["enddate"]
+            endtime = data["endtime"]
+            if startdate and starttime and enddate and endtime and starttime != endtime:
+                start = datetime.fromisoformat(f"{startdate}T{starttime}")
+                end = datetime.fromisoformat(f"{enddate}T{endtime}")
+                data["duration"] = str(end - start)
+        return data

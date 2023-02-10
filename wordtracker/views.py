@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from django.views.generic import TemplateView
+from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import CreateView
 
 from .forms import LogWorkForm
@@ -81,6 +81,19 @@ def session_timer(request, ws_id=None):
     return render(
         request, "wordtracker/session_timer.html", context={"worksession": ws}
     )
+
+
+class WorkSessionListView(ListView):
+    model = WorkSession
+    template_name = "wordtracker/stats.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user_summary"] = WorkSession.objects.user_summary(self.request.user)
+        return context
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
 
 
 @login_required

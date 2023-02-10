@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -56,6 +58,96 @@ class Project(models.Model):
         return self.name
 
 
+class WorkSessionQuerySet(models.QuerySet):
+    def user_summary_date_range(self, user, start: str, end: str):
+        """Return summary statistics for the given date range and user. Note that
+        the end date is exclusive, and the filter is based on the WorkSession
+        statdate (because enddate is an optional field).
+
+        {
+            "sessions": 7,
+            "wordcount": 4900,
+            "duration": 25200
+        }
+        """
+        stats = self.filter(
+            user=user, startdate__gte=start, startdate__lt=end
+        ).aggregate(
+            sessions=models.Count("startdate"),
+            wordcount=models.Sum("wordcount"),
+            duration=models.Sum("duration"),
+        )
+        if stats["duration"]:
+            stats["duration"] = int(stats["duration"].total_seconds())
+        return stats
+
+    def user_summary(self, user):
+        """Return a data structure summarizing statistics for the user.
+
+        The data include number of sessions, total wordcount, and total duration (in
+        seconds). These data are provided for the following time periods: past 7 days,
+        past 30 days, all time (all three periods *exclude* the current day).
+
+            {
+                'sevenday_sessions': 3,
+                'sevenday_wordcount': 3144,
+                'sevenday_duration': 6600,
+                'thirtyday_sessions': 3,
+                'thirtyday_wordcount': 3144,
+                'thirtyday_duration': 6600,
+                'all_sessions': 3,
+                'all_wordcount': 3144,
+                'all_duration': 6600
+            }
+        """
+        # TODO: Cache user summary until end of calendar day
+        today = datetime.now().date()
+        seven_days_ago = today - timedelta(days=7)
+        seven_days = models.Q(startdate__lt=today, startdate__gte=seven_days_ago)
+        thirty_days_ago = today - timedelta(days=30)
+        thirty_days = models.Q(startdate__lt=today, startdate__gte=thirty_days_ago)
+        all = models.Q(startdate__lt=today)
+
+        stats = self.filter(user=user).aggregate(
+            sevenday_sessions=models.Count(
+                "startdate",
+                filter=seven_days,
+            ),
+            sevenday_wordcount=models.Sum(
+                "wordcount",
+                filter=seven_days,
+            ),
+            sevenday_duration=models.Sum(
+                "duration",
+                filter=seven_days,
+            ),
+            thirtyday_sessions=models.Count(
+                "startdate",
+                filter=thirty_days,
+            ),
+            thirtyday_wordcount=models.Sum(
+                "wordcount",
+                filter=thirty_days,
+            ),
+            thirtyday_duration=models.Sum(
+                "duration",
+                filter=thirty_days,
+            ),
+            all_sessions=models.Count("startdate", filter=all),
+            all_wordcount=models.Sum("wordcount", filter=all),
+            all_duration=models.Sum("duration", filter=all),
+        )
+        if stats["all_duration"]:
+            stats["all_duration"] = int(stats["all_duration"].total_seconds())
+        if stats["sevenday_duration"]:
+            stats["sevenday_duration"] = int(stats["sevenday_duration"].total_seconds())
+        if stats["thirtyday_duration"]:
+            stats["thirtyday_duration"] = int(
+                stats["thirtyday_duration"].total_seconds()
+            )
+        return stats
+
+
 class WorkSession(models.Model):
     """
     A Work Session represents a (semi-)contiguous block of time spent working on a
@@ -74,6 +166,11 @@ class WorkSession(models.Model):
     users can set the `activity` field to anything they like. This allows one to track
     time spent on research, editing, etc.
     """
+
+    class Meta:
+        get_latest_by = ("startdate", "starttime")
+        indexes = [models.Index(fields=("startdate", "starttime"), name="start_dt")]
+        ordering = ("-startdate", "-starttime")
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name=_("user"), on_delete=models.PROTECT
@@ -96,6 +193,8 @@ class WorkSession(models.Model):
     activity = models.CharField(
         _("activity"), max_length=255, blank=True, db_index=True
     )
+
+    objects = WorkSessionQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("work session")

@@ -1,5 +1,54 @@
 {% extends 'wordtracker/base.html' %}
+{% load i18n l10n %}
 {% block content %}
-<h1>My Writing Statistics</h1>
-<p class="">To do.</p>
+<main class="container">
+  <h1>{% trans "My Writing Statistics" %}</h1>
+  <h2>{% trans "Summary" %}</h2>
+  <table class="table table-hover">
+    <thead>
+      <th>{% trans "Window" %}</th>
+      <th>{% trans "Sessions" %}</th>
+      <th>{% trans "Words" %}</th>
+      <th>{% trans "Total Time" %}</th>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Last 30 days</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>All time</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h2>Detail</h2>
+  {% for worksession in object_list %}
+  {% if forloop.first %}
+  <table class="table table-hover">
+    <thead>
+      <th>{% trans "Date" %}</th>
+      <th>{% trans "Project" %}</th>
+      <th>{% trans "Words" %}</th>
+      <th>{% trans "Time Spent" %}</th></thead>
+    <tbody>
+  {% endif %}
+      <tr>
+        <td>{% firstof worksession.enddate|date worksession.startdate|date %}</td>
+        <td>{{ worksession.project }}</td>
+        <td>{{ worksession.wordcount|localize }}</td>
+        <td>{{ worksession.duration }}</td>
+      </tr>
+  {% if forloop.last %}
+    </tbody>
+  </table>
+  {% endif %}
+  {% empty %}
+  <p>{% trans "No sessions recorded." %}</p>{% endfor %}
+</main>
 {% endblock content %}
