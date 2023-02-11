@@ -35,12 +35,12 @@ def devsetup(rebuild=False):
     # Upgrade pip in virtualenv. Need pip >= 21.3.1 for -e with pyproject.toml
     # 3.8's pip won't cut it.
     print("Upgrading virtualenv to latest pip")
-    subprocess.run([python, "-m", "pip", "install", "-q", "-U", "pip"])
+    subprocess.run([python, "-m", "pip", "install", "-q", "-U", "pip", "wheel"])
 
     # Run pip install -e .[dev]
     #   - Installs requirements from pyproject.toml, not requirements.txt
     print("Installing requirements. May take a bit. Grab a coffee.")
-    subprocess.run([python, "-m", "pip", "install", "-q", ".[dev]"])
+    subprocess.run([python, "-m", "pip", "install", "-q", "-e", ".[dev]"])
 
     # FIXME HACK support editable genericsite
     print("HACK Installing editable django-genericsite for development only.")
@@ -52,7 +52,7 @@ def devsetup(rebuild=False):
             "install",
             "-q",
             "-e",
-            "git+ssh://git@github.com/veselosky/django-genericsite.git#egg=django-genericsite",
+            "../django-genericsite/",
         ]
     )
 
