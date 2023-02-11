@@ -28,7 +28,6 @@ urlpatterns = [
     # path("accounts/", include("django.contrib.auth.urls")),
     path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
-    path("filer/", include("filer.urls")),
     path("tinymce/", include("tinymce.urls")),
     path(
         "<slug:section_slug>/<slug:article_slug>.html",

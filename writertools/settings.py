@@ -99,8 +99,6 @@ INSTALLED_APPS = [
     # 3rd party apps for genericsite
     "django_bootstrap_icons",
     "easy_thumbnails",
-    "filer",
-    "mptt",  # for filer
     "taggit",
     "tinymce",
     # Core Django below custom so we can override their templates
@@ -142,6 +140,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
+                "genericsite.apps.context_defaults",
             ],
         },
     },
