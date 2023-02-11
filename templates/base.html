@@ -1,2 +1,6 @@
-{% extends 'genericsite/base.html' %}
-{% block header %}{% include "blocks/header.html" %}{% endblock header %}
+{% extends 'genericsite/base.html' %}{% load genericsite static %}
+{% block header %}
+<header class="page_header {% sitevar 'bootstrap_container_class' %}">
+  {% include "blocks/header.html" %}
+</header>
+{% endblock header %}
