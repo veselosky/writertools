@@ -90,6 +90,7 @@ WSGI_APPLICATION = "writertools.wsgi.application"
 ROOT_URLCONF = "writertools.urls"
 
 INSTALLED_APPS = [
+    "plotboard",
     "wordtracker",
     "genericsite",
     "django_bootstrap5",
