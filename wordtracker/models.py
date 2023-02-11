@@ -45,7 +45,7 @@ class Project(models.Model):
         choices=ProjectStatus.choices,
         default=ProjectStatus.IN_PROGRESS,
         help_text=_(
-            "Note: Only Works In Progress will be chooseable in new work sessions."
+            "Note: Only Works In Progress will be selectable in new work sessions."
         ),
     )
     desciption = models.TextField(_("description"), blank=True)
