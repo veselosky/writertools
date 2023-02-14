@@ -17,6 +17,7 @@ class Board(models.Model):
     per_row = models.PositiveSmallIntegerField(
         _("sequences per row"),
         validators=[v.MinValueValidator(1), v.MaxValueValidator(32)],
+        blank=True,
         default=2,
     )
     owner = models.ForeignKey("auth.user", on_delete=models.CASCADE)
@@ -25,7 +26,7 @@ class Board(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("board_detail", kwargs={"pk": self.pk})
+        return reverse("plotboard:board_detail", kwargs={"pk": self.pk})
 
 
 class Sequence(models.Model):

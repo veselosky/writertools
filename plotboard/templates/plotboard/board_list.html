@@ -1,0 +1,41 @@
+{% extends 'base.html' %}{% load django_bootstrap5 bootstrap_icons genericsite static i18n %}
+{% block title %}My Plot Boards{% endblock title %}
+{% block precontent %}{% sitevars as sv %}
+<div class="precontent {{sv.bootstrap_container_class}}">
+  <h1>Plot Boards</h1>
+  <p class="lead">Some explanatory text about plot boards.</p>
+</div>
+{% endblock precontent %}
+{% block content %}
+<main class="container">
+  <div class="row align-items-center">
+    <h2 class="col-sm-5 col-md-7 col-lg-4">My Plot Boards</h2>
+    <form
+      class="col-sm-7 col-md-5 col-lg-4 align-items-end"
+      action="{% url 'plotboard:board_create' %}"
+      method="post">{% csrf_token %}
+      {% with create_form.name as field %}
+      <label for="id_{{field.name}}" class="form-label visually-hidden">{{field.label}}</label>
+      <span class="input-group">
+        {{field|add_classes:"form-control-sm"}}
+        <button class="btn btn-outline-primary">{% bs_icon "plus-circle" extra_classes="bi-valign-middle" %} {% trans "Add" %}</button>
+      </span>
+      {% endwith %}
+    </form>
+  </div>
+  {% for board in object_list %}
+  {% if forloop.first %}
+  <div class="row list-group">
+    <div class="col-lg-8">
+  {% endif %}
+      <a href="{% url 'plotboard:board_detail' board.pk %}"
+      class="list-group-item list-group-item-action">{{board.name}}</a>
+  {% if forloop.last %}
+    </div>
+  </div>
+  {% endif %}
+  {% empty %}
+  <p>{% trans "You have not created any boards yet." %}</p>
+  {% endfor %}
+</main>
+{% endblock content %}

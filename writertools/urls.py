@@ -20,6 +20,7 @@ from django.urls import include, path
 from genericsite import views as generic
 
 urlpatterns = [
+    path("plotboard/", include("plotboard.urls")),
     path("wordtracker/", include("wordtracker.urls")),
     # Genericsite accounts/profile
     path("accounts/profile/", generic.ProfileView.as_view(), name="account_profile"),

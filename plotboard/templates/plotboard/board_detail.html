@@ -1,0 +1,227 @@
+{% extends "base.html" %}{% load bootstrap_icons genericsite static i18n %}
+{% block title %}{{ object.name }} | Plot Board{% endblock title %}
+{% block content %}
+<style>
+  .sequence {
+    border: solid 1px gray;
+    padding: 4px;
+  }
+
+  .cards {
+    display: grid;
+    font-size: 75%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .card {
+    /* padding * 2 (top and bottom) plus 2 lines of text */
+    min-height: calc(.25rem * 2 + 2em * var(--bs-body-line-height));
+  }
+
+  .scene-control {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .card:hover .scene-control, .card:focus-within .scene-control {
+    display: inline-block;
+  }
+
+</style>
+<main class="container-fluid">
+  <h1>{{object.name}} | Plot Board</h1>
+  <div class="board row p-2">
+    <div class="sequence col-12 col-lg-6">1. Inciting Incident
+      <div class="cards w-100">
+        <div id="scene-card-1" class="card p-1" tabindex=0>
+          <p class="card-text">1 year ago: Portal Incident</p>
+          <div class="scene-control">
+            <form action="" method="get">
+              <button name="action" value="edit" class="btn btn-sm btn-outline-primary">{% bs_icon "pencil" %}</button>
+              <button name="action" value="delete" class="btn btn-sm btn-outline-danger">{% bs_icon "trash3" %}</button>
+            </form>
+          </div>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Drunk Liam gets in a bar fight.</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Prince is murdered.</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Magus reports protal to Council</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Dream: Liam and the dragon, Magus burned</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Liam is arrested</p>
+        </div>
+      </div>
+    </div>
+    <div class="sequence col-12 col-lg-6">2. Crossing the Threshold
+      <div class="cards w-100">
+        <div class="card p-1">
+          <p class="card-text">Liam is interrogated</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Tribunal</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Verdict</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Rescue? No, kidnapping.</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Escape!</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Marshal on the trail</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Giving Chase</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Enter teh Nexus</p>
+        </div>
+      </div>
+    </div>
+    <div class="sequence col-12 col-lg-6">3. First Pinch Point
+      <div class="cards w-100">
+        <div class="card p-1">
+          <p class="card-text">Liam is interrogated</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Tribunal</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Verdict</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Rescue? No, kidnapping.</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Escape!</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Marshal on the trail</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Giving Chase</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Enter teh Nexus</p>
+        </div>
+      </div>
+    </div>
+    <div class="sequence col-12 col-lg-6">4. Midpoint Shift
+      <div class="cards w-100">
+        <div class="card p-1">
+          <p class="card-text">Liam is interrogated</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Some kids discover that the ghost who has been haunting
+            the building is actually just old man Peabody in disguise!</p>
+            <div class="scene-control">
+              <form action="" method="get">
+                <button name="action" value="edit" class="btn btn-sm btn-outline-primary">{% bs_icon "pencil" %}</button>
+                <button name="action" value="delete" class="btn btn-sm btn-outline-danger">{% bs_icon "trash3" %}</button>
+              </form>
+            </div>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Liam is interrogated</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Tribunal</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Verdict</p>
+        </div>
+      </div>
+    </div>
+    <div class="sequence col-12 col-lg-6">5. Second Pinch Point
+      <div class="cards w-100">
+        <div class="card p-1">
+          <p class="card-text">Something happens, hopefully something cool</p>
+        </div>
+      </div>
+    </div>
+    <div class="sequence col-12 col-lg-6">6. All is Lost
+      <div class="cards w-100">
+        <div class="card p-1">
+          <p class="card-text">Liam is interrogated</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Tribunal</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Verdict</p>
+        </div>
+      </div>
+    </div>
+    <div class="sequence col-12 col-lg-6">7. Failed or False Ending
+      <div class="cards w-100">
+        <div class="card p-1">
+          <p class="card-text">Liam is interrogated</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Tribunal</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Verdict</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Rescue? No, kidnapping.</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Escape!</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Marshal on the trail</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Giving Chase</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Enter teh Nexus</p>
+        </div>
+      </div>
+    </div>
+    <div class="sequence col-12 col-lg-6">8. Climax and Resolution
+      <div class="cards w-100">
+        <div class="card p-1">
+          <p class="card-text">Liam is interrogated</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Tribunal</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">The Verdict</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Rescue? No, kidnapping.</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Escape!</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Marshal on the trail</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Giving Chase</p>
+        </div>
+        <div class="card p-1">
+          <p class="card-text">Enter teh Nexus</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock content %}
