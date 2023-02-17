@@ -29,6 +29,7 @@ urlpatterns = [
     path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
     path("tinymce/", include("tinymce.urls")),
+    path("feed/", generic.SiteFeed(), name="site_feed"),
     path(
         "<slug:section_slug>/<slug:article_slug>.html",
         generic.ArticleDetailView.as_view(),
