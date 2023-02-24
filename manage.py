@@ -37,10 +37,10 @@ def devsetup(rebuild=False):
     print("Upgrading virtualenv to latest pip")
     subprocess.run([python, "-m", "pip", "install", "-q", "-U", "pip", "wheel"])
 
-    # Run pip install -e .[dev]
-    #   - Installs requirements from pyproject.toml, not requirements.txt
     print("Installing requirements. May take a bit. Grab a coffee.")
-    subprocess.run([python, "-m", "pip", "install", "-q", "-e", ".[dev]"])
+    subprocess.run(
+        [python, "-m", "pip", "install", "-q", "-r", "etc/pip/requirements-dev.txt"]
+    )
 
     # FIXME HACK support editable genericsite
     print("HACK Installing editable django-genericsite for development only.")
@@ -69,6 +69,48 @@ def devsetup(rebuild=False):
     print("Dev setup complete. Activate your virtualenv with: . venv/bin/activate")
 
 
+def upgrade_requirements():
+    this = Path(sys.argv[0]).resolve(strict=True)
+    venvdir = this.parent / "venv"
+    python = venvdir / "bin" / "python"
+    env = os.environ.copy()
+    env.setdefault("CUSTOM_COMPILE_COMMAND", "./manage.py upgrade_requirements")
+    subprocess.run(
+        [
+            python,
+            "-m",
+            "piptools",
+            "compile",
+            "--upgrade",
+            "--generate-hashes",
+            "--reuse-hashes",
+            "--no-emit-index-url",
+            "--output-file=requirements.txt",
+            "etc/pip/requirements.in",
+        ],
+        env=env,
+        capture_output=True,
+        check=True,
+    )
+    subprocess.run(
+        [
+            python,
+            "-m",
+            "piptools",
+            "compile",
+            "--upgrade",
+            "--generate-hashes",
+            "--reuse-hashes",
+            "--no-emit-index-url",
+            "--output-file=requirements-test.txt",
+            "etc/pip/requirements-test.in",
+        ],
+        env=env,
+        capture_output=True,
+        check=True,
+    )
+
+
 def django_command(args=None):
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "writertools.settings")
@@ -89,5 +131,7 @@ if __name__ == "__main__":
         if len(sys.argv) > 2 and sys.argv[2] in ["--rebuild", "-r"]:
             rebuild = True
         devsetup(rebuild=rebuild)
+    elif sys.argv[1] == "upgrade_requirements":
+        upgrade_requirements()
     else:
         django_command()

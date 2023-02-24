@@ -68,6 +68,9 @@ if not MEDIA_ROOT.exists():
 # Javascript / CSS assets being served from cache.
 # See https://docs.djangoproject.com/en/3.2/ref/contrib/staticfiles/#manifeststaticfilesstorage
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+if env("TESTING_MODE", default=False):
+    # Prevents errors with different test runs stomping on each other's manifests
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 # But for production, you almost certainly should be using a shared storage backend, like:
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 
