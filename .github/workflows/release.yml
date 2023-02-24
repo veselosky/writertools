@@ -1,0 +1,19 @@
+name: Package a release of Writer Tools
+on:
+  push:
+    tags:
+      - "release-*"
+  workflow_dispatch:
+
+jobs:
+  run_tests:
+    uses: ./.github/workflows/test.yml
+
+  create_release:
+    runs-on: ubuntu-22.04
+    needs: run_tests
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Create a Github Release
+        run: gh release create ${{ github.ref }} --generate-notes
