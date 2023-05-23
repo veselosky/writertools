@@ -1,7 +1,7 @@
 {% extends 'base.html' %}{% load django_bootstrap5 bootstrap_icons genericsite static i18n %}
 {% block title %}My Plot Boards{% endblock title %}
-{% block precontent %}{% sitevars as sv %}
-<div class="precontent {{sv.bootstrap_container_class}}">
+{% block precontent %}
+<div class="precontent {{bootstrap_container_class}}">
   <h1>Plot Boards</h1>
   <p class="lead">Some explanatory text about plot boards.</p>
 </div>
