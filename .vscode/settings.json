@@ -1,0 +1,13 @@
+{
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "isort.importStrategy": "fromEnvironment",
+  "isort.args": ["--profile", "black"],
+  "python.analysis.autoImportCompletions": true,
+  "python.formatting.provider": "none"
+}

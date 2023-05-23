@@ -27,19 +27,8 @@ urlpatterns = [
     # Use allauth views rather than Django defaults
     path("accounts/", include("allauth.urls")),
     # path("accounts/", include("django.contrib.auth.urls")),
-    path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("admin/", admin.site.urls),
-    path("tinymce/", include("tinymce.urls")),
-    path(
-        "<slug:section_slug>/<slug:article_slug>.html",
-        generic.ArticleDetailView.as_view(),
-        name="article_page",
-    ),
-    path(
-        "<slug:page_slug>.html", generic.PageDetailView.as_view(), name="landing_page"
-    ),
-    path("<slug:section_slug>/", generic.SectionView.as_view(), name="section_page"),
-    path("", generic.HomePageView.as_view(), name="home_page"),
+    path("", include("genericsite.urls")),
 ]
 
 if settings.DEBUG:

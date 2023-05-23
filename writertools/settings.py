@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 import environ
+import genericsite.apps
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,30 +89,15 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 #######################################################################
 WSGI_APPLICATION = "writertools.wsgi.application"
 ROOT_URLCONF = "writertools.urls"
-
-INSTALLED_APPS = [
+INSTALLED_APPS = genericsite.apps.plus(
+    # Your apps here
     "plotboard",
     "wordtracker",
-    "genericsite",
     "django_bootstrap5",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    # 3rd party apps for genericsite
-    "django_bootstrap_icons",
-    "easy_thumbnails",
-    "taggit",
-    "tinymce",
-    # Core Django below custom so we can override their templates
-    "django.contrib.admin",
-    "django.contrib.admindocs",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.sites",
-    "django.contrib.staticfiles",
-]
+)
 
 MIDDLEWARE = [
     # https://docs.djangoproject.com/en/3.2/ref/middleware/#django.middleware.security.SecurityMiddleware
@@ -124,6 +110,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     # https://docs.djangoproject.com/en/3.2/ref/clickjacking/
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "genericsite.redirects.TemporaryRedirectFallbackMiddleware",
 ]
 
 TEMPLATES = [
