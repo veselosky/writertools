@@ -16,7 +16,7 @@ charset-normalizer==3.3.2
     # via requests
 click==8.1.7
     # via pip-tools
-cryptography==41.0.7
+cryptography==41.0.6
     # via pyjwt
 defusedxml==0.7.1
     # via
