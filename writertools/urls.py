@@ -54,7 +54,8 @@ if settings.DEBUG:
     try:
         import debug_toolbar
 
-        # Catch-all patterns may block these if appended, hence insert
-        urlpatterns.insert(0, path("__debug__/", include(debug_toolbar.urls)))
+        if "debug_toolbar" in settings.INSTALLED_APPS:
+            # Catch-all patterns may block these if appended, hence insert
+            urlpatterns.insert(0, path("__debug__/", include(debug_toolbar.urls)))
     except ImportError:
         pass

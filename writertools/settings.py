@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import importlib.util
 from pathlib import Path
 
 import environ
@@ -176,6 +176,10 @@ ACCOUNT_USERNAME_VALIDATORS = None  # TODO Will I need this?
 # DEVELOPMENT: If running in a dev environment, loosen restrictions
 # and add debugging tools.
 #######################################################################
+# Conditionally add django-extensions if it's installed
+if importlib.util.find_spec("django_extensions"):
+    INSTALLED_APPS.append("django_extensions")
+
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 
@@ -185,23 +189,11 @@ if DEBUG:
 
     # Use the basic storage with no manifest
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-    try:
-        import debug_toolbar
 
+    if importlib.util.find_spec("debug_toolbar"):
         INSTALLED_APPS.append("debug_toolbar")
         MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
         INTERNAL_IPS = [
             "127.0.0.1",
         ]
         # See also urls.py for debug_toolbar urls
-    except ImportError:
-        # Dev tools are optional
-        pass
-
-    try:
-        import django_extensions
-
-        INSTALLED_APPS.append("django_extensions")
-    except ImportError:
-        # Dev tools are optional
-        pass
