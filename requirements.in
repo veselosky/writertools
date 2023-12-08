@@ -1,0 +1,8 @@
+django >= 5.0, <5.1
+django-allauth >= 0.58.0
+django-bootstrap5 >= 22.2
+django-bootstrap-icons >= 0.8.2
+django-environ >= 0.11.2
+docutils >= 0.19
+pillow >= 10.0.1
+django-genericsite@ https://github.com/veselosky/django-genericsite/releases/download/release-0.1.5/django_genericsite-0.1.5-py3-none-any.whl

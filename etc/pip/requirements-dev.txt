@@ -1,7 +1,0 @@
--r requirements.in
--r requirements-test.in
-black
-django_debug_toolbar
-django_extensions
-pip-tools
-pycodestyle
